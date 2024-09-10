@@ -31,9 +31,9 @@ sequelize.sync({ force: false })
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(express.json());   // req.body를 ajax json 요청으로부터
+app.use(express.urlencoded({ extended: false }));   // req.body 폼으로부터
+app.use(cookieParser(process.env.COOKIE_SECRET));   // 
 app.use(session({
   resave: false,
   saveUninitialized: false,
@@ -44,7 +44,7 @@ app.use(session({
   },
 }));
 app.use(passport.initialize()); // req.user, req.login, req.isAuthenticate, req.logout
-app.use(passport.session()); // connect.id라는 이름으로 세션 쿠키가 브라우저로 전송
+app.use(passport.session()); // connect.sid라는 이름으로 세션 쿠키가 브라우저로 전송
 
 app.use('/', pageRouter);
 app.use('/auth', authRouter);
