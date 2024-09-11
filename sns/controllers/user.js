@@ -30,3 +30,15 @@ exports.unfollow = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.change = async (req, res, next) => {
+    try {
+        await User.update({nick: req.body.nickname}, {
+            where: { id: req.user.id },
+        });
+        res.redirect('/profile');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+}

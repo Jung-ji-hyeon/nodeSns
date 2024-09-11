@@ -18,5 +18,12 @@
         {% endfor %}
       {% endif %}
     </div>
+    <div class="change-info"></div>
+      <h2>이름 바꾸기</h2>
+      <form id="change-info-nic" action="/user/profile" method="post">
+        <input name="nickname"/>
+        <button id="change-button" type="submit">변경</button>
+      </form>
+    </div>
   </div>
 {% endblock %}
