@@ -4,7 +4,7 @@ const { isLoggedIn, isNotLoggedIn } = require('../middlewares');
 const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
-const { afterUploadImage, uploadPost } = require('../controllers/post');
+const { afterUploadImage, uploadPost , Postdelete } = require('../controllers/post');
 
 try {
     fs.readdirSync('uploads');
@@ -30,5 +30,7 @@ router.post('/img', isLoggedIn, upload.single('img'), afterUploadImage);
 
 const upload2 = multer();
 router.post('/', isLoggedIn, upload2.none(), uploadPost);
+
+router.post('/:id/delete', isLoggedIn, Postdelete);
 
 module.exports = router;

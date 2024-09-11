@@ -31,3 +31,14 @@ exports.uploadPost = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.Postdelete = async (req, res, next) => {
+    try{
+        const post = await Post.findOne({ where: { id:req.params.id, userId:req.user.id } });
+        await post.destroy();
+        res.redirect('/');
+        } catch(error){
+            console.error(error);
+            next(error);
+        }
+};
