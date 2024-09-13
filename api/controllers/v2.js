@@ -87,3 +87,22 @@ exports.getPostsByHashtag = async (req, res) => {
         })
     }
 };
+
+exports.getFollow = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ where: { id: res.locals.decoded.id } });
+        const follower = await user.getFollowers({ attributes: ['id', 'nick'] });
+        const following = await user.getFollowings({ attributes: ['id', 'nick'] });
+        return res.json({
+            code: 200,
+            follower,
+            following,
+        })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            code: 500,
+            message: '서버 에러',
+        });
+    }
+};

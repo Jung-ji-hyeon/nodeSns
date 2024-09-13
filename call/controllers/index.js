@@ -47,3 +47,13 @@ exports.searchByHashtag = async (req, res, next) => {
 exports.renderMain = (req, res) => {
   res.render('main', { key: process.env.CLIENT_SECRET });
 }
+
+exports.follows = async (req, res, next) => {
+  try {
+    const result = await request(req, `/follow`);
+    res.json(result.data);
+    } catch (error) {
+      console.error(error);
+      next(error);
+    }
+};
