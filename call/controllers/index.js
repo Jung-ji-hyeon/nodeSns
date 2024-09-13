@@ -45,7 +45,7 @@ exports.searchByHashtag = async (req, res, next) => {
 };
 
 exports.renderMain = (req, res) => {
-  res.render('main', { key: process.env.CLIENT_SECRET });
+  res.render('main', { key: process.env.FRONT_SECRET });
 }
 
 exports.follows = async (req, res, next) => {

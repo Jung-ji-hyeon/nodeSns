@@ -20,7 +20,8 @@ exports.createDomain = async (req, res, next) => {
             UserId: req.user.id,
             host: req.body.host,
             type: req.body.type,
-            clientSecret: uuidv4()
+            clientSecret: uuidv4(),
+            frontSecret: uuidv4()
         })
         res.redirect('/');
     } catch (error) {
