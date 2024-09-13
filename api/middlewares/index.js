@@ -45,7 +45,20 @@ exports.apiLimiter = async (req, res, next) => {
   handler(req, res) {
     res.status(this.statusCode).json({
       code: this.statusCode,
-      message: '1분에 열 번만 요청할 수 있습니다.'
+      message: '무료 사용자는 1분에 한 번만 요청할 수 있습니다.'
+    });
+  }
+}) (req, res, next);
+};
+
+exports.premiumApiLimiter = async (req, res, next) => {
+  rateLimit({
+  windowMs: 60 * 1000,
+  max: 1000,
+  handler(req, res) {
+    res.status(this.statusCode).json({
+      code: this.statusCode,
+      message: '유료 사용자는 1분에 천 번만 요청할 수 있습니다.'
     });
   }
 }) (req, res, next);
@@ -69,5 +82,16 @@ exports.corsWhenDomainMatches = async (req, res, next) => {
     }) (req, res, next);
   } else {
     next();
+  }
+};
+
+exports.prm = async (req, res, next) => {
+  const domain = await Domain.findOne({
+    where: { host: new URL(req.get('origin')).host },
+  });
+  if (domain.type === 'premium') {
+    premiumApiLimiter(req, res, next);
+  } else {
+    this.apiLimiter(req, res, next);
   }
 };
