@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const { follow } = require('../services/user');
 
 exports.follow = async (req, res, next) => {
     // req.user.id, req.params.id
