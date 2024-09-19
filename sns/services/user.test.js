@@ -17,17 +17,16 @@ describe('follow', () => {
     test('사용자를 못 찾으면 no user를 반환함', async () => {
         User.findOne.mockReturnValue(null);
         const result = await follow(1, 2);
-        await follow(req, res, next);
         expect(result).toEqual('no user');
     });
 
-    test('DB에서 에러가 발생하면 next(error)를 호출함', async () => {
+    test('DB에서 에러가 발생하면 throw', async () => {
         const message = 'DB에러';
         User.findOne.mockReturnValue(Promise.reject(message));
         try {
             await follow(1, 2);
         } catch (err) {
-        expect(err).toEqual(message);
+            expect(err).toEqual(message);
         }
     });
 })
