@@ -5,6 +5,8 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const nunjucks = require('nunjucks');
 const dotenv = require('dotenv');
+const connect = require('./schemas');
+const ColorHash = require('color-hash').default;
 dotenv.config();
 
 const webSocket = require('./socket');
@@ -16,6 +18,8 @@ nunjucks.configure('views', {
     express: app,
     watch: true
 });
+
+connect();
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -31,6 +35,15 @@ app.use(session({
         secure: false
     },
 }));
+
+app.use((req, res, next) => {
+    if (!req.session.color) {
+    const colorHash = new ColorHash();
+    req.session.color = colorHash.hex(req.sessionID);
+    console.log(req.session.color, req.sessionID);
+    }
+    next();
+});
 
 app.use('/', idnexRouter);
 app.use((req, res, next) => {
@@ -50,4 +63,4 @@ const server = app.listen(app.get('port'), () => {
     console.log(app.get('port'), '빈 포트에서 대기 중');
 });
 
-webSocket(server);
+webSocket(server, app);
